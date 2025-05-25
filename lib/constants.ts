@@ -15,7 +15,7 @@ export const COMPANY = {
     contact: {
         email: "hello@lvl8studios.com",
         phone: "+1 (555) 123-4567",
-        location: "San Francisco, CA",
+        location: "Singapore",
     },
 } as const
 
@@ -23,35 +23,120 @@ export const COMPANY = {
 export const TEAM_MEMBERS = [
     {
         name: "David Chan",
-        designation: "Founder & Lead Developer",
+        designation: "Co-Founder",
         quote: "Passionate about creating innovative solutions that bridge the gap between complex technology and user-friendly experiences. I believe great software should feel effortless to use.",
-        src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=500&fit=crop&crop=face",
+        src: "/david.jpg",
     },
     {
-        name: "Sarah Chen",
-        designation: "Full-Stack Developer",
+        name: "Jensen Huang",
+        designation: "Co-Founder",
         quote: "I love turning ideas into reality through clean, efficient code. My focus is on building scalable applications that can grow with our clients' needs.",
-        src: "https://images.unsplash.com/photo-1494790108755-2616b612b4e9?w=500&h=500&fit=crop&crop=face",
+        src: "/jensen.jpg",
     },
     {
-        name: "Alex Rodriguez",
-        designation: "UI/UX Designer",
+        name: "Benjamin Koh",
+        designation: "Co-Founder",
         quote: "Design is not just how it looks, but how it works. I create intuitive interfaces that make complex processes feel simple and delightful for users.",
-        src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=500&h=500&fit=crop&crop=face",
-    },
-    {
-        name: "Maya Patel",
-        designation: "DevOps Engineer",
-        quote: "I ensure our applications run smoothly and scale efficiently. My passion lies in building robust infrastructure that supports innovation and growth.",
-        src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&h=500&fit=crop&crop=face",
+        src: "/ben.jpg",
     },
 ]
 
-// Social links (for future use)
+// Projects data
+export const PROJECTS = [
+    {
+        title: "CoconutSplit",
+        button: "View Project",
+        src: "coconutsplit.png",
+        description: "A Telegram Bot and Mini App for splitting expense with friends. Used by ~500 users.",
+        technologies: ["Next.js", "Supabase", "Telegram", "FastAPI"],
+        category: "Telegram Mini App",
+        projectLink: "https://t.me/CoconutSplitBot",
+        liveDemo: "https://t.me/CoconutSplitBot",
+        features: [
+            {
+                title: "Smart Expense Tracking",
+                description: "Automatically track and categorize expenses with intelligent splitting algorithms",
+                color: "green"
+            },
+            {
+                title: "Telegram Integration",
+                description: "Seamless integration with Telegram for easy group expense management",
+                color: "blue"
+            },
+            {
+                title: "Real-time Settlements",
+                description: "Instant calculation and tracking of who owes what to whom",
+                color: "purple"
+            },
+            {
+                title: "Multi-currency Support",
+                description: "Handle expenses in different currencies with automatic conversion",
+                color: "orange"
+            }
+        ]
+    },
+    {
+        title: "Gyatword",
+        button: "View Project",
+        src: "gyatword.jpeg",
+        description: "Brainrot crossword game that won Best Polygot Hack at NUS Hack&Roll 2025.",
+        technologies: ["React", "Scala", "FastAPI", "JWT"],
+        category: "Web Application",
+        projectLink: "https://devpost.com/software/gyatword",
+        githubLink: "https://github.com/lvl8studios/gyatword",
+        liveDemo: "https://gyatword.com",
+        features: [
+            {
+                title: "Brainrot Vocabulary",
+                description: "Fun crossword puzzles featuring modern internet slang and memes",
+                color: "green"
+            },
+            {
+                title: "Polyglot Architecture",
+                description: "Built with multiple programming languages for optimal performance",
+                color: "blue"
+            },
+            {
+                title: "Interactive Gameplay",
+                description: "Engaging user interface with smooth animations and feedback",
+                color: "purple"
+            },
+            {
+                title: "Award Winning",
+                description: "Best Polyglot Hack winner at NUS Hack&Roll 2025",
+                color: "orange"
+            }
+        ]
+    },
+    {
+        title: "GyatSound",
+        button: "View Project",
+        src: "gyatsound.png",
+        description: "Telegram bot to trol your friends with meme sounds.",
+        technologies: ["FastAPI", "Docker", "Heroku"],
+        category: "Telegram Bot",
+        projectLink: "https://t.me/GyatSound_Bot",
+        githubLink: "https://github.com/lvl8studios/gyatsound",
+        liveDemo: "https://t.me/GyatSound_Bot",
+        features: [
+            {
+                title: "Funny Meme Sounds",
+                description: "A collection of hilarious meme sounds to prank your friends",
+                color: "green"
+            },
+            {
+                title: "Open Source",
+                description: "Fully open source with contributions welcome from the community",
+                color: "blue"
+            },
+        ]
+    },
+] as const
+
+// Social links
 export const SOCIAL_LINKS = {
-    github: "#",
-    linkedin: "#",
-    twitter: "#",
+    github: "https://github.com/lvl8studios",
+    linkedin: "https://linkedin.com/company/lvl8studios",
 } as const
 
 // Animation/scroll constants

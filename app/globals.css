@@ -104,4 +104,41 @@
   * {
     transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
   }
+
+  /* Hide scrollbars for webkit browsers (Chrome, Safari, Edge) */
+  ::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Hide scrollbars for Firefox */
+  html {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  /* Ensure scroll functionality is maintained */
+  html, body {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  /* Hide scrollbars for any scrollable containers */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
