@@ -1,0 +1,31 @@
+# Bun configuration file
+[install]
+# Automatically install peer dependencies
+auto = true
+
+# Use exact versions instead of ranges
+exact = false
+
+# Cache directory
+cache = false
+
+# Registry settings
+registry = "https://registry.npmjs.org/"
+
+[install.scopes]
+# Optional: Configure scoped registries if needed
+
+[run]
+# Use Node.js runtime for Next.js dev server to avoid stream issues
+bun = false
+
+[dev]
+# Use Node.js for development to avoid compatibility issues
+prefer-node = true
+
+# Enable shell expansion
+shell = "bun"
+
+[test]
+# Test configuration
+preload = []
