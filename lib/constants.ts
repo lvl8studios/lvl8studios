@@ -39,6 +39,18 @@ export const TEAM_MEMBERS = [
         quote: "Design is not just how it looks, but how it works. I create intuitive interfaces that make complex processes feel simple and delightful for users.",
         src: "/ben.jpg",
     },
+    {
+        name: "Anish Kousik",
+        designation: "Developer",
+        quote: "I thrive on solving challenging problems with elegant solutions. My goal is to build software that not only meets requirements but also inspires users.",
+        src: "/anish.jpg",
+    },
+    {
+        name: "Siva Adharsh",
+        designation: "Developer",
+        quote: "Design is about creating meaningful experiences. I focus on crafting interfaces that are not only beautiful but also enhance usability and accessibility.",
+        src: "/siva.jpg",
+    }
 ]
 
 // Projects data
