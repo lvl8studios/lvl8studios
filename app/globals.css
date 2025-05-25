@@ -2,20 +2,106 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
 
-@media (prefers-color-scheme: dark) {
+
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Light mode - using white background with your company colors as accents */
+    --background: 0 0% 100%;
+    --foreground: 236 73% 12%; /* oxford-blue */
+    
+    --card: 0 0% 100%;
+    --card-foreground: 236 73% 12%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 236 73% 12%;
+    
+    --primary: 178 78% 49%; /* turquoise */
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 196 71% 55%; /* aero */
+    --secondary-foreground: 0 0% 100%;
+    
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 236 73% 12%;
+    
+    --accent: 196 71% 55%; /* aero */
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 178 78% 85%; /* light turquoise */
+    --input: 0 0% 94%;
+    --ring: 178 78% 49%; /* turquoise */
+
+    /* Company colors as custom variables */
+    --turquoise: 178 78% 49%;
+    --dark-purple: 259 85% 8%;
+    --dark-purple-2: 265 89% 7%;
+    --oxford-blue: 236 73% 12%;
+    --aero: 196 71% 55%;
+
+    --chart-1: 178 78% 49%; /* turquoise */
+    --chart-2: 196 71% 55%; /* aero */
+    --chart-3: 236 73% 12%; /* oxford-blue */
+    --chart-4: 259 85% 8%; /* dark-purple */
+    --chart-5: 265 89% 7%; /* dark-purple-2 */
+
+    --radius: 0.5rem
+  }
+  
+  .dark {
+    /* Dark mode - using black background with white/off-white text */
+    --background: 0 0% 0%; /* black */
+    --foreground: 0 0% 95%; /* off-white */
+    
+    --card: 0 0% 5%; /* very dark grey */
+    --card-foreground: 0 0% 95%;
+    
+    --popover: 0 0% 5%;
+    --popover-foreground: 0 0% 95%;
+    
+    --primary: 178 78% 49%; /* turquoise */
+    --primary-foreground: 0 0% 0%;
+    
+    --secondary: 0 0% 15%; /* dark grey */
+    --secondary-foreground: 0 0% 95%;
+    
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 70%; /* light grey */
+    
+    --accent: 178 78% 49%; /* turquoise */
+    --accent-foreground: 0 0% 0%;
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 0 0% 20%;
+    --input: 0 0% 10%;
+    --ring: 178 78% 49%;
+
+    --chart-1: 178 78% 49%; /* turquoise */
+    --chart-2: 196 71% 55%; /* aero */
+    --chart-3: 0 0% 30%; /* grey */
+    --chart-4: 0 0% 20%; /* darker grey */
+    --chart-5: 0 0% 15%; /* darkest grey */
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  /* Smooth transitions for theme changes */
+  * {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  }
 }
