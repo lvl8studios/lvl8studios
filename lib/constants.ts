@@ -50,6 +50,12 @@ export const TEAM_MEMBERS = [
         designation: "Developer",
         quote: "Design is about creating meaningful experiences. I focus on crafting interfaces that are not only beautiful but also enhance usability and accessibility.",
         src: "/siva.jpg",
+    },
+    {
+        name: "Aayush Sharma",
+        designation: "README Writer",
+        quote: "I believe in the power of collaboration and continuous learning. My approach is to build software that adapts to changing needs while maintaining high quality.",
+        src: "/aayush.jpg",
     }
 ]
 
