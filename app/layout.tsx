@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "lvl8studios",
-  description: "Software development startup",
+  description: "Software development group",
 };
 
 export default function RootLayout({

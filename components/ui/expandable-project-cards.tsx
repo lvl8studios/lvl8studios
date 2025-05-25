@@ -70,7 +70,7 @@ export default function ExpandableProjectCards({ projects }: ExpandableProjectCa
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0, transition: { duration: 0.05 } }}
-                            className="flex absolute top-2 right-2 lg:hidden items-center justify-center bg-white rounded-full h-6 w-6"
+                            className="flex absolute top-4 right-4 lg:hidden items-center justify-center bg-white/90 backdrop-blur-sm rounded-full h-8 w-8 z-50 shadow-lg border border-neutral-200"
                             onClick={() => setActive(null)}
                         >
                             <CloseIcon />
