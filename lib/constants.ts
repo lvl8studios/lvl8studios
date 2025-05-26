@@ -130,7 +130,7 @@ export const PROJECTS = [
         title: "GyatSound",
         button: "View Project",
         src: "gyatsound.png",
-        description: "Telegram bot to trol your friends with meme sounds.",
+        description: "Telegram bot to troll your friends with meme sounds.",
         technologies: ["FastAPI", "Docker", "Heroku"],
         category: "Telegram Bot",
         projectLink: "https://t.me/GyatSound_Bot",

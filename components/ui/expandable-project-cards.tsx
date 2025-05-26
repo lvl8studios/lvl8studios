@@ -27,6 +27,7 @@ interface ExpandableProjectCardsProps {
 
 export default function ExpandableProjectCards({ projects }: ExpandableProjectCardsProps) {
     const [active, setActive] = useState<Project | boolean | null>(null);
+    const [imagesLoaded, setImagesLoaded] = useState<Set<string>>(new Set());
     const id = useId();
     const ref = useRef<HTMLDivElement>(null!);
 
@@ -46,6 +47,34 @@ export default function ExpandableProjectCards({ projects }: ExpandableProjectCa
         window.addEventListener("keydown", onKeyDown);
         return () => window.removeEventListener("keydown", onKeyDown);
     }, [active]);
+
+    // Preload images to prevent blinking
+    useEffect(() => {
+        const preloadImage = (src: string) => {
+            return new Promise<void>((resolve) => {
+                const img = new Image();
+                img.onload = () => {
+                    setImagesLoaded(prev => new Set(prev).add(src));
+                    resolve();
+                };
+                img.onerror = () => {
+                    // Still mark as "loaded" to prevent infinite loading state
+                    console.warn(`Failed to load image: ${src}`);
+                    setImagesLoaded(prev => new Set(prev).add(src));
+                    resolve();
+                };
+                img.src = src;
+            });
+        };
+
+        // Preload all project images
+        const preloadPromises = projects.map(project => preloadImage(project.src));
+        
+        // Optional: You can add a timeout to ensure loading doesn't hang indefinitely
+        Promise.allSettled(preloadPromises).then(() => {
+            // All images processed (loaded or failed)
+        });
+    }, [projects]);
 
     useOutsideClick(ref, () => setActive(null));
 
@@ -82,13 +111,22 @@ export default function ExpandableProjectCards({ projects }: ExpandableProjectCa
                         >
                             {/* Hero Image */}
                             <motion.div layoutId={`image-${active.title}-${id}`} className="relative">
-                                <img
-                                    width={600}
-                                    height={300}
-                                    src={active.src}
-                                    alt={active.title}
-                                    className="w-full h-64 lg:h-72 sm:rounded-tr-3xl sm:rounded-tl-3xl object-cover object-center"
-                                />
+                                {imagesLoaded.has(active.src) ? (
+                                    <img
+                                        width={600}
+                                        height={300}
+                                        src={active.src}
+                                        alt={active.title}
+                                        className="w-full h-64 lg:h-72 sm:rounded-tr-3xl sm:rounded-tl-3xl object-cover object-center"
+                                    />
+                                ) : (
+                                    <div className="w-full h-64 lg:h-72 sm:rounded-tr-3xl sm:rounded-tl-3xl bg-neutral-100 dark:bg-neutral-800 animate-pulse flex items-center justify-center">
+                                        <div className="flex flex-col items-center gap-2">
+                                            <div className="w-8 h-8 border-2 border-neutral-300 dark:border-neutral-600 border-t-primary rounded-full animate-spin"></div>
+                                            <span className="text-sm text-neutral-500 dark:text-neutral-400">Loading...</span>
+                                        </div>
+                                    </div>
+                                )}
                                 {/* Gradient overlay for better text readability */}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                             </motion.div>
@@ -119,13 +157,13 @@ export default function ExpandableProjectCards({ projects }: ExpandableProjectCa
 
                                         <motion.a
                                             layout
-                                            initial={{ opacity: 0, scale: 0.8 }}
-                                            animate={{ opacity: 1, scale: 1 }}
-                                            exit={{ opacity: 0, scale: 0.8 }}
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
                                             href={active.projectLink || active.liveDemo || "#"}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="px-6 py-3 text-sm font-semibold rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200 whitespace-nowrap shadow-lg hover:shadow-xl transform hover:scale-105"
+                                            className="px-6 py-3 text-sm font-semibold rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-200 whitespace-nowrap shadow-lg"
                                         >
                                             {active.button}
                                         </motion.a>
@@ -136,9 +174,9 @@ export default function ExpandableProjectCards({ projects }: ExpandableProjectCa
                                 <div className="p-6">
                                     <motion.div
                                         layout
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: 20 }}
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
                                         className="space-y-6"
                                     >
                                         {/* Technologies Section */}
@@ -151,9 +189,9 @@ export default function ExpandableProjectCards({ projects }: ExpandableProjectCa
                                                 {active.technologies.map((tech, index) => (
                                                     <motion.span
                                                         key={tech}
-                                                        initial={{ opacity: 0, x: -20 }}
-                                                        animate={{ opacity: 1, x: 0 }}
-                                                        transition={{ delay: index * 0.05 }}
+                                                        initial={{ opacity: 0 }}
+                                                        animate={{ opacity: 1 }}
+                                                        transition={{ delay: index * 0.03 }}
                                                         className="px-3 py-2 text-sm bg-neutral-50 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 rounded-lg border border-neutral-200 dark:border-neutral-700 font-medium text-center hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
                                                     >
                                                         {tech}
@@ -183,9 +221,9 @@ export default function ExpandableProjectCards({ projects }: ExpandableProjectCa
                                                         return (
                                                             <motion.div
                                                                 key={feature.title}
-                                                                initial={{ opacity: 0, x: -20 }}
-                                                                animate={{ opacity: 1, x: 0 }}
-                                                                transition={{ delay: index * 0.1 }}
+                                                                initial={{ opacity: 0 }}
+                                                                animate={{ opacity: 1 }}
+                                                                transition={{ delay: index * 0.05 }}
                                                                 className="flex items-start gap-3 p-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg"
                                                             >
                                                                 <div className={`w-2 h-2 ${colorClasses[feature.color as keyof typeof colorClasses] || 'bg-primary'} rounded-full mt-2 flex-shrink-0`}></div>
@@ -213,8 +251,8 @@ export default function ExpandableProjectCards({ projects }: ExpandableProjectCa
                                                             href={active.githubLink}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
-                                                            initial={{ opacity: 0, scale: 0.9 }}
-                                                            animate={{ opacity: 1, scale: 1 }}
+                                                            initial={{ opacity: 0 }}
+                                                            animate={{ opacity: 1 }}
                                                             className="flex items-center gap-2 px-4 py-2 bg-neutral-900 dark:bg-neutral-700 text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-600 transition-colors duration-200"
                                                         >
                                                             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -228,8 +266,8 @@ export default function ExpandableProjectCards({ projects }: ExpandableProjectCa
                                                             href={active.liveDemo}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
-                                                            initial={{ opacity: 0, scale: 0.9 }}
-                                                            animate={{ opacity: 1, scale: 1 }}
+                                                            initial={{ opacity: 0 }}
+                                                            animate={{ opacity: 1 }}
                                                             className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors duration-200"
                                                         >
                                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -259,23 +297,29 @@ export default function ExpandableProjectCards({ projects }: ExpandableProjectCa
                             className="group relative bg-white dark:bg-neutral-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl border border-neutral-200 dark:border-neutral-800 cursor-pointer transition-all duration-300"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.4, delay: index * 0.1 }}
+                            transition={{ duration: 0.3, delay: index * 0.05 }}
                             viewport={{ once: true }}
-                            whileHover={{ y: -5, scale: 1.02 }}
+                            whileHover={{ y: -2 }}
                         >
                             {/* Image Container */}
                             <div className="relative overflow-hidden">
                                 <motion.div layoutId={`image-${project.title}-${id}`}>
-                                    <img
-                                        width={400}
-                                        height={250}
-                                        src={project.src}
-                                        alt={project.title}
-                                        className="w-full h-48 object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                                    />
+                                    {imagesLoaded.has(project.src) ? (
+                                        <img
+                                            width={400}
+                                            height={250}
+                                            src={project.src}
+                                            alt={project.title}
+                                            className="w-full h-48 object-cover object-center group-hover:scale-102 transition-transform duration-300"
+                                        />
+                                    ) : (
+                                        <div className="w-full h-48 bg-neutral-100 dark:bg-neutral-800 animate-pulse flex items-center justify-center">
+                                            <div className="w-6 h-6 border-2 border-neutral-300 dark:border-neutral-600 border-t-primary rounded-full animate-spin"></div>
+                                        </div>
+                                    )}
                                 </motion.div>
                                 {/* Gradient Overlay */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                                 {/* Category Badge */}
                                 <div className="absolute top-3 left-3">
                                     <span className="px-3 py-1 text-xs font-medium bg-white/90 dark:bg-neutral-800/90 backdrop-blur-sm text-neutral-700 dark:text-neutral-300 rounded-full border border-white/20">
@@ -323,8 +367,7 @@ export default function ExpandableProjectCards({ projects }: ExpandableProjectCa
                                     <div className="flex items-center justify-between">
                                         <span className="text-sm font-medium text-primary">View Details</span>
                                         <motion.div
-                                            className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300"
-                                            whileHover={{ scale: 1.1 }}
+                                            className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-200"
                                         >
                                             <svg
                                                 className="w-3 h-3 text-primary"
