@@ -13,7 +13,7 @@ export const COMPANY = {
     description: "We build innovative software solutions with cutting-edge technology and modern design principles.",
     logo: "/logo.png",
     contact: {
-        email: "hello@lvl8studios.com",
+        email: "david@lvl8studios.com",
         phone: "+1 (555) 123-4567",
         location: "Singapore",
     },

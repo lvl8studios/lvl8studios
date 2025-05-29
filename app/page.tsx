@@ -10,14 +10,16 @@ import { FooterSection } from "@/components/sections/footer-section"
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background">
+    <>
       <Navbar />
-      <HeroSection />
-      <AboutSection />
-      <TeamSection />
-      <ProjectsSection />
-      <ContactSection />
-      <FooterSection />
-    </div>
+      <div className="min-h-screen bg-background">
+        <HeroSection />
+        <AboutSection />
+        <TeamSection />
+        <ProjectsSection />
+        <ContactSection />
+        <FooterSection />
+      </div>
+    </>
   );
 }

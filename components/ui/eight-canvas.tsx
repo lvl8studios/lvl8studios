@@ -33,7 +33,7 @@ const Eight = ({ isMobile }: { isMobile: boolean }) => {
                     object={eight.scene}
                     scale={isMobile ? 6.0 : 8.0}
                     position={[0, isMobile ? 0.5 : 1.5, 0]}
-                    rotation={[-0.01, -0.2, -0.1]}
+                    rotation={[-0.01, 1, -0.1]}
                 />
             </mesh>
         </Float>

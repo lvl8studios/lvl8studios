@@ -126,12 +126,6 @@
     -ms-overflow-style: none;
   }
 
-  /* Ensure scroll functionality is maintained */
-  html, body {
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-
   /* Hide scrollbars for any scrollable containers */
   .scrollbar-hide {
     -ms-overflow-style: none;
