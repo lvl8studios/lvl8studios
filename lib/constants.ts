@@ -24,7 +24,7 @@ export const TEAM_MEMBERS = [
     {
         name: "David Chan",
         designation: "Co-Founder",
-        quote: "Passionate about creating innovative solutions that bridge the gap between complex technology and user-friendly experiences. I believe great software should feel effortless to use.",
+        quote: "Passionate about creating innovative solutions that bridge the gap between complex technology and user-friendly experiences.",
         src: "/david.jpg",
     },
     {
