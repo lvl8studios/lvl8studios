@@ -25,13 +25,13 @@ export const TEAM_MEMBERS = [
         name: "David Chan",
         designation: "Co-Founder",
         quote: "Passionate about creating innovative solutions that bridge the gap between complex technology and user-friendly experiences.",
-        src: "/david.jpg",
+        src: "/david.png",
     },
     {
         name: "Jensen Huang",
         designation: "Co-Founder",
         quote: "I love turning ideas into reality through clean, efficient code. My focus is on building scalable applications that can grow with our clients' needs.",
-        src: "/jensen.jpg",
+        src: "/jensen.jpeg",
     },
     {
         name: "Benjamin Koh",
@@ -43,19 +43,19 @@ export const TEAM_MEMBERS = [
         name: "Anish Kousik",
         designation: "Developer",
         quote: "I thrive on solving challenging problems with elegant solutions. My goal is to build software that not only meets requirements but also inspires users.",
-        src: "/anish.jpg",
+        src: "/anish.jpeg",
     },
     {
         name: "Siva Adharsh",
         designation: "Developer",
         quote: "Design is about creating meaningful experiences. I focus on crafting interfaces that are not only beautiful but also enhance usability and accessibility.",
-        src: "/siva.jpg",
+        src: "/siva.jpeg",
     },
     {
         name: "Aayush Sharma",
         designation: "README Writer",
         quote: "I believe in the power of collaboration and continuous learning. My approach is to build software that adapts to changing needs while maintaining high quality.",
-        src: "/aayush.jpg",
+        src: "/aayush.jpeg",
     }
 ]
 
