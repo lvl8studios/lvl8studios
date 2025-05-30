@@ -68,8 +68,8 @@ export const PROJECTS = [
         description: "A Telegram Bot and Mini App for splitting expense with friends. Used by ~500 users.",
         technologies: ["Next.js", "Supabase", "Telegram", "FastAPI"],
         category: "Telegram Mini App",
-        projectLink: "https://t.me/CoconutSplitBot",
-        liveDemo: "https://t.me/CoconutSplitBot",
+        projectLink: "https://t.me/coconutsplit_bot",
+        liveDemo: "https://t.me/coconutsplit_bot",
         features: [
             {
                 title: "Smart Expense Tracking",
