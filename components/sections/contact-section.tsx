@@ -89,7 +89,7 @@ export function ContactSection() {
                         transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
                         viewport={{ once: true, margin: "-100px" }}
                     >
-                        Ready to start your next project? Let's discuss how we can help bring your ideas to life.
+                        Feedback, questions, or just want to say hello? We'd love to hear from you! Fill out the form below or reach out via email.
                     </motion.p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
                         <motion.div
