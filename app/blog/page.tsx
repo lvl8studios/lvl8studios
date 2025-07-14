@@ -1,12 +1,14 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image"
-import { BLOG_POSTS } from "@/lib/constants"
+import { BlogPost } from "@/types/blog"
 import { NavbarDemo } from "@/components/navbar"
+import { useBlogPrefetch } from "@/hooks/use-blog-prefetch"
 
-function BlogCard({ post, index }: { post: (typeof BLOG_POSTS)[number], index: number }) {
+function BlogCard({ post, index }: { post: BlogPost, index: number }) {
     return (
         <motion.article
             className="group bg-card rounded-2xl border border-border overflow-hidden hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500"
@@ -68,6 +70,15 @@ function BlogCard({ post, index }: { post: (typeof BLOG_POSTS)[number], index: n
 }
 
 export default function BlogPage() {
+    const { posts, isLoading, error, getBlogPosts, isCached } = useBlogPrefetch()
+
+    useEffect(() => {
+        // Only fetch if not already cached
+        if (!isCached) {
+            getBlogPosts()
+        }
+    }, [getBlogPosts, isCached])
+
     return (
         <div className="min-h-screen bg-background">
             <NavbarDemo />
@@ -100,17 +111,39 @@ export default function BlogPage() {
 
                         {/* Blog Posts Feed */}
                         <div className="max-w-4xl mx-auto">
-                            <motion.div
-                                className="space-y-8"
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6 }}
-                                viewport={{ once: true, margin: "-100px" }}
-                            >
-                                {BLOG_POSTS.map((post, index) => (
-                                    <BlogCard key={post.id} post={post} index={index} />
-                                ))}
-                            </motion.div>
+                            
+                            {isLoading ? (
+                                <div className="text-center py-12">
+                                    <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                                    <p className="text-muted-foreground">Loading posts...</p>
+                                </div>
+                            ) : error ? (
+                                <div className="text-center py-12">
+                                    <p className="text-red-500 mb-4">{error}</p>
+                                    <button 
+                                        onClick={getBlogPosts}
+                                        className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+                                    >
+                                        Try Again
+                                    </button>
+                                </div>
+                            ) : posts.length === 0 ? (
+                                <div className="text-center py-12">
+                                    <p className="text-muted-foreground">No posts yet. Check back soon!</p>
+                                </div>
+                            ) : (
+                                <motion.div
+                                    className="space-y-8"
+                                    initial={{ opacity: 0, y: 30 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.6 }}
+                                    viewport={{ once: true, margin: "-100px" }}
+                                >
+                                    {posts.map((post, index) => (
+                                        <BlogCard key={post.id} post={post} index={index} />
+                                    ))}
+                                </motion.div>
+                            )}
                         </div>
                     </div>
                 </div>

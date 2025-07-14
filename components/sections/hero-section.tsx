@@ -6,11 +6,11 @@ import { CyclingAppIcons } from "@/components/ui/cycling-app-icons"
 
 export function HeroSection() {
     return (
-        <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
+        <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background pt-20 md:pt-24">
             <div className="relative z-20 container mx-auto px-6 text-center">
                 <div className="max-w-4xl mx-auto space-y-10">
                     <motion.div
-                        className="flex justify-center mb-16 -mt-12"
+                        className="flex justify-center mb-16 -mt-6 md:-mt-12"
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -25,7 +25,7 @@ export function HeroSection() {
 
                     <div className="text-center space-y-8">
                         <motion.h1
-                            className="text-3xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight"
+                            className="text-2xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight"
                             initial={{ opacity: 0, y: 50 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}

@@ -1,11 +1,11 @@
 "use client"
 
-import { use } from "react"
+import { use, useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { BLOG_POSTS } from "@/lib/constants"
+import { BlogPost } from "@/types/blog"
 import { NavbarDemo } from "@/components/navbar"
 import { MarkdownRenderer } from "@/components/ui/markdown-renderer"
 import { ArrowLeft, Calendar, Clock, User } from "lucide-react"
@@ -18,8 +18,44 @@ interface BlogPostPageProps {
 
 export default function BlogPostPage({ params }: BlogPostPageProps) {
     const { slug } = use(params)
-    const post = BLOG_POSTS.find(p => p.id === slug)
-    
+    const [post, setPost] = useState<BlogPost | null>(null)
+    const [isLoading, setIsLoading] = useState(true)
+
+    useEffect(() => {
+        fetchPost()
+    }, [slug])
+
+    const fetchPost = async () => {
+        try {
+            const response = await fetch(`/api/blog/${slug}`)
+            if (response.ok) {
+                const data = await response.json()
+                setPost(data)
+            } else if (response.status === 404) {
+                notFound()
+            }
+        } catch (error) {
+            console.error('Error fetching post:', error)
+            notFound()
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-background">
+                <NavbarDemo />
+                <div className="pt-20 flex items-center justify-center min-h-screen">
+                    <div className="text-center">
+                        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                        <p className="text-muted-foreground">Loading post...</p>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     if (!post) {
         notFound()
     }

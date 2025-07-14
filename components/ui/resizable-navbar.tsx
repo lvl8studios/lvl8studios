@@ -130,7 +130,7 @@ export const NavItems = ({
   };
 
   return (
-    <div className="flex flex-row space-x-6 items-center">
+    <div className="flex flex-row space-x-6 items-center pr-3">
       {/* Products Dropdown */}
       <div className="relative" ref={productsDropdownRef}>
         <button

@@ -187,7 +187,7 @@ export const COCONUTSPLIT_SECTION = {
         }
     },
     stats: {
-        openingText: "CoconutSplit maintains a growing community of ...",
+        openingText: "CoconutSplit maintains a growing community of",
         users: {
             value: 1100,
             label: "users"
