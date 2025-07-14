@@ -3,10 +3,11 @@ import { getBlogPostById } from '@/lib/blog-db'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const post = await getBlogPostById(params.slug)
+    const { slug } = await params
+    const post = await getBlogPostById(slug)
     
     if (!post || !post.published) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 })

@@ -5,7 +5,7 @@ import { GridFSBucket, ObjectId } from 'mongodb'
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
-) {
+): Promise<Response> {
   try {
     const { id } = await params
     
@@ -40,7 +40,7 @@ export async function GET(
     // Convert stream to buffer
     const chunks: Buffer[] = []
     
-    return new Promise((resolve, reject) => {
+    return new Promise<Response>((resolve, reject) => {
       downloadStream.on('data', (chunk) => {
         chunks.push(chunk)
       })
