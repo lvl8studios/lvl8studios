@@ -104,9 +104,16 @@ export const NavItems = ({
     
     if (isHomePage) {
       // On home page, scroll to section
-      const element = document.querySelector(link);
+      const element = document.querySelector(link) as HTMLElement;
       if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
+        const headerOffset = 100; // Account for fixed header
+        const elementPosition = element.offsetTop;
+        const offsetPosition = elementPosition - headerOffset;
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+        });
       }
     } else {
       // On other pages, navigate to home page with hash
@@ -119,9 +126,16 @@ export const NavItems = ({
     
     if (isHomePage) {
       // On home page, scroll to section
-      const element = document.querySelector(href);
+      const element = document.querySelector(href) as HTMLElement;
       if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
+        const headerOffset = 100; // Account for fixed header
+        const elementPosition = element.offsetTop;
+        const offsetPosition = elementPosition - headerOffset;
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+        });
       }
     } else {
       // On other pages, navigate to home page with hash
@@ -357,15 +371,25 @@ export const MobileProductAccordion = ({
     
     if (isHomePage) {
       // On home page, scroll to section
-      const element = document.querySelector(href);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
+      onClose();
+      // Add small delay to ensure menu closes first
+      setTimeout(() => {
+        const element = document.querySelector(href) as HTMLElement;
+        if (element) {
+          const headerOffset = 100; // Account for fixed header
+          const elementPosition = element.offsetTop;
+          const offsetPosition = elementPosition - headerOffset;
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+          });
+        }
+      }, 100);
     } else {
       // On other pages, navigate to home page with hash
       window.location.href = `/${href}`;
     }
-    onClose();
   };
 
   return (

@@ -7,7 +7,7 @@ import { CyclingAppIcons } from "@/components/ui/cycling-app-icons"
 export function HeroSection() {
     return (
         <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background pt-20 md:pt-24">
-            <div className="relative z-20 container mx-auto px-6 text-center">
+            <div className="relative z-20 container mx-auto px-6 md:mb-24 text-center">
                 <div className="max-w-4xl mx-auto space-y-10">
                     <motion.div
                         className="flex justify-center mb-16 -mt-6 md:-mt-12"
