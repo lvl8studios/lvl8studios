@@ -57,7 +57,7 @@ function TechCategory({ title, technologies, delay = 0 }: TechCategoryProps) {
             <h3 className="text-xl font-semibold text-foreground text-center mb-6">
                 {title}
             </h3>
-            <div className="flex flex-wrap justify-center gap-8 md:gap-12">
+            <div className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-12 max-w-4xl mx-auto">
                 {technologies.map((tech, index) => (
                     <TechItem
                         key={tech.name}

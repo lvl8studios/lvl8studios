@@ -16,7 +16,6 @@ import {
   X
 } from 'lucide-react'
 import { BlogPost } from '@/types/blog'
-import { useBlogPrefetch } from '@/hooks/use-blog-prefetch'
 
 export default function AdminDashboard() {
   const [posts, setPosts] = useState<BlogPost[]>([])
@@ -38,7 +37,6 @@ export default function AdminDashboard() {
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [isUploading, setIsUploading] = useState(false)
   const router = useRouter()
-  const { clearBlogCache } = useBlogPrefetch()
 
   useEffect(() => {
     // Check authentication
@@ -105,7 +103,6 @@ export default function AdminDashboard() {
 
       if (response.ok) {
         await fetchPosts()
-        clearBlogCache() // Clear the blog cache so the public blog page shows updated data
         resetForm()
       }
     } catch (error) {
@@ -143,7 +140,6 @@ export default function AdminDashboard() {
 
       if (response.ok) {
         await fetchPosts()
-        clearBlogCache() // Clear the blog cache so the public blog page shows updated data
       }
     } catch (error) {
       console.error('Error deleting post:', error)

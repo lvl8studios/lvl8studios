@@ -46,12 +46,12 @@ export const TEAM_MEMBERS = [
     },
     {
         name: "Anish Kousik",
-        designation: "Developer",
+        designation: "Software Development",
         src: "/anish.jpeg",
     },
     {
         name: "Siva Adharsh",
-        designation: "Developer",
+        designation: "Software Development",
         src: "/siva.jpeg",
     },
     {

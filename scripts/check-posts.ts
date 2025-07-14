@@ -26,7 +26,7 @@ async function checkPosts() {
     });
 
     // Check GridFS files
-    const bucket = new GridFSBucket(db, { bucketName: 'images' });
+    const bucket = new GridFSBucket(db, { bucketName: 'blog_images' });
     const files = await bucket.find({}).toArray();
     console.log(`📁 Current GridFS files: ${files.length}`);
     
