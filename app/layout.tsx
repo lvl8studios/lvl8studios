@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import { BlogPrefetcher } from "@/components/blog-prefetcher";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -37,7 +36,6 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <BlogPrefetcher />
           {children}
         </ThemeProvider>
       </body>

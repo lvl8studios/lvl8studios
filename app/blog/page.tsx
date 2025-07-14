@@ -6,7 +6,6 @@ import Link from "next/link"
 import Image from "next/image"
 import { BlogPost } from "@/types/blog"
 import { NavbarDemo } from "@/components/navbar"
-import { useBlogPrefetch } from "@/hooks/use-blog-prefetch"
 
 function BlogCard({ post, index }: { post: BlogPost, index: number }) {
     return (
@@ -70,14 +69,26 @@ function BlogCard({ post, index }: { post: BlogPost, index: number }) {
 }
 
 export default function BlogPage() {
-    const { posts, isLoading, error, getBlogPosts, isCached } = useBlogPrefetch()
+    const [posts, setPosts] = useState<BlogPost[]>([])
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        // Only fetch if not already cached
-        if (!isCached) {
-            getBlogPosts()
+        fetchPosts()
+    }, [])
+
+    const fetchPosts = async () => {
+        try {
+            const response = await fetch('/api/blog')
+            if (response.ok) {
+                const data = await response.json()
+                setPosts(data)
+            }
+        } catch (error) {
+            console.error('Error fetching posts:', error)
+        } finally {
+            setIsLoading(false)
         }
-    }, [getBlogPosts, isCached])
+    }
 
     return (
         <div className="min-h-screen bg-background">
@@ -116,16 +127,6 @@ export default function BlogPage() {
                                 <div className="text-center py-12">
                                     <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
                                     <p className="text-muted-foreground">Loading posts...</p>
-                                </div>
-                            ) : error ? (
-                                <div className="text-center py-12">
-                                    <p className="text-red-500 mb-4">{error}</p>
-                                    <button 
-                                        onClick={getBlogPosts}
-                                        className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
-                                    >
-                                        Try Again
-                                    </button>
                                 </div>
                             ) : posts.length === 0 ? (
                                 <div className="text-center py-12">

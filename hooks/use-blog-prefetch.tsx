@@ -12,6 +12,15 @@ export function useBlogPrefetch() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  // Initialize with cached posts if available
+  useEffect(() => {
+    if (blogPostsCache) {
+      setPosts(blogPostsCache)
+      setIsLoading(false)
+      setError(null)
+    }
+  }, [])
+
   const fetchBlogPosts = useCallback(async (): Promise<BlogPost[]> => {
     // Return cached posts if available
     if (blogPostsCache) {
@@ -46,14 +55,28 @@ export function useBlogPrefetch() {
   // Prefetch function to start loading posts
   const prefetchBlogPosts = useCallback(async () => {
     try {
-      await fetchBlogPosts()
+      const posts = await fetchBlogPosts()
+      // Update state if component is still mounted
+      setPosts(posts)
+      setIsLoading(false)
+      setError(null)
     } catch (error) {
       console.error('Error prefetching blog posts:', error)
+      setError(error instanceof Error ? error.message : 'Failed to fetch posts')
+      setIsLoading(false)
     }
   }, [fetchBlogPosts])
 
   // Get posts (from cache or fetch)
   const getBlogPosts = useCallback(async () => {
+    // If we already have cached posts, return immediately
+    if (blogPostsCache) {
+      setPosts(blogPostsCache)
+      setIsLoading(false)
+      setError(null)
+      return
+    }
+
     setIsLoading(true)
     setError(null)
     
@@ -68,18 +91,13 @@ export function useBlogPrefetch() {
     }
   }, [fetchBlogPosts])
 
-  // Get posts from cache immediately if available
-  useEffect(() => {
-    if (blogPostsCache) {
-      setPosts(blogPostsCache)
-      setIsLoading(false)
-    }
-  }, [])
-
   // Clear cache function (useful for admin operations)
   const clearBlogCache = useCallback(() => {
     blogPostsCache = null
     blogPostsPromise = null
+    setPosts([])
+    setIsLoading(true)
+    setError(null)
   }, [])
 
   return {
