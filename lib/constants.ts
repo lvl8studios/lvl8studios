@@ -173,7 +173,7 @@ export const SCROLL_OPTIONS = {
 export const COCONUTSPLIT_SECTION = {
     title: "CoconutSplit",
     description: "Split expenses effortlessly with friends and family, right from your Telegram group chat.",
-    instagramPostId: "DLh4VflSzCF", // Replace with actual Instagram post ID
+    instagramPostId: "DMuuLpjSgvC", // Replace with actual Instagram post ID
     instagramHandle: "coconutsplitbot",
     instagramUrl: "https://instagram.com/coconutsplitbot",
     buttons: {
@@ -189,17 +189,17 @@ export const COCONUTSPLIT_SECTION = {
     stats: {
         openingText: "CoconutSplit maintains a growing community of",
         users: {
-            value: 1100,
+            value: 1300,
             label: "users"
         },
         transactions: {
-            value: 5000,
+            value: 7000,
             label: "transactions"
         },
         value: {
-            value: 800,
+            value: 1.1,
             prefix: "$",
-            suffix: "k SGD",
+            suffix: "mil SGD",
             label: "worth of expenses"
         }
     }

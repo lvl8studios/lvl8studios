@@ -82,25 +82,15 @@ export function NavbarDemo() {
                   
                   if (isHomePage) {
                     // On home page, scroll to section
-                    setIsMobileMenuOpen(false);
-                    // Add small delay to ensure menu closes first
-                    setTimeout(() => {
-                      const element = document.querySelector(item.link) as HTMLElement;
-                      if (element) {
-                        const headerOffset = 100; // Account for fixed header
-                        const elementPosition = element.offsetTop;
-                        const offsetPosition = elementPosition - headerOffset;
-                        
-                        window.scrollTo({
-                          top: offsetPosition,
-                          behavior: "smooth"
-                        });
-                      }
-                    }, 100);
+                    const element = document.querySelector(item.link);
+                    if (element) {
+                      element.scrollIntoView({ behavior: "smooth" });
+                    }
                   } else {
                     // On other pages, navigate to home page with hash
                     window.location.href = `/${item.link}`;
                   }
+                  setIsMobileMenuOpen(false);
                 }}
                 className="relative text-muted-foreground hover:text-foreground transition-colors"
               >

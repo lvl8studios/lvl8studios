@@ -98,6 +98,16 @@ export function TechSection() {
                         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                             {TECH_SECTION.description}
                         </p>
+                        <p className="text-base text-muted-foreground mt-4">
+                            Learn how we use them at our{' '}
+                            <a href="/blog" className="inline-flex items-center gap-1 text-primary underline hover:text-primary/80 transition-colors">
+                                blog
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                            </a>
+                        </p>
+                        
                     </motion.div>
 
                     {/* Tech Categories */}
