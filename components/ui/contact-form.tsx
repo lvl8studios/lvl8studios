@@ -39,7 +39,7 @@ export default function ContactForm({
         setSubmitting(true);
         try {
             const res = await trpc.feedback.submit.mutate({
-                kind: "contact",
+                kind: "lvl8studios.com-contact",
                 componentId,
                 data: {
                     name: state.name || state.email,
