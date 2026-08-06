@@ -1,8 +1,8 @@
-// @ts-nocheck
 "use client";
 import * as React from "react";
-import { useFluxLynx } from "@fluxlynx/react";
+import emailjs from "@emailjs/browser";
 import { cn } from "@/lib/utils";
+import { COMPANY } from "@/lib/constants";
 import { useState } from "react";
 import { Button } from "./button";
 import { Input } from "./input";
@@ -21,7 +21,6 @@ export default function ContactForm({
     className,
     onSubmitted,
 }: ContactFormProps) {
-    const { trpc } = useFluxLynx();
     const [state, setState] = useState<{
         name: string;
         email: string;
@@ -37,26 +36,31 @@ export default function ContactForm({
     async function onSubmit(e: React.FormEvent) {
         e.preventDefault();
         setSubmitting(true);
+        setStatus("idle");
+
         try {
-            const res = await trpc.feedback.submit.mutate({
-                kind: "lvl8studios.com-contact",
-                componentId,
-                data: {
-                    name: state.name || state.email,
-                    email: state.email,
+            await emailjs.send(
+                process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+                process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+                {
+                    from_name: state.name,
+                    from_email: state.email,
                     message: state.message,
+                    to_name: COMPANY.name,
+                    component_id: componentId,
                 },
+                process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+            );
+
+            onSubmitted?.(true);
+            setStatus("success");
+            setState({
+                name: "",
+                email: "",
+                message: "",
             });
-            onSubmitted?.(res.ok);
-            setStatus(res.ok ? "success" : "error");
-            if (res.ok) {
-                setState({
-                    name: "",
-                    email: "",
-                    message: "",
-                });
-            }
         } catch {
+            onSubmitted?.(false);
             setStatus("error");
         } finally {
             setSubmitting(false);
@@ -152,5 +156,4 @@ export default function ContactForm({
         </div>
     );
 }
-
 
