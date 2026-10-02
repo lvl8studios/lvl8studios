@@ -1,0 +1,2 @@
+- lvl8studios is a software collective founded by Jensen, David, and Ben that builds cool products such as CoconutSplit, a Telegram expense-splitting application with 10,000 users.
+- Blog links support repository-cached hover previews; when adding or changing links in `content/blog`, run `bun run update-link-previews` and commit the generated metadata and images.

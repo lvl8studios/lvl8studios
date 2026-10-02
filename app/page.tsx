@@ -1,27 +1,28 @@
-"use client"
-
-import { NavbarDemo } from "@/components/navbar"
+import { SiteHeader } from "@/components/navbar"
 import { HeroSection } from "@/components/sections/hero-section"
-import { CoconutSplitSection } from "@/components/sections/coconutsplit-section"
-import { CoconutSplitStatsSection } from "@/components/sections/coconutsplit-stats-section"
-import { GyatWordSection } from "@/components/sections/gyatword-section"
-import { TechSection } from "@/components/sections/tech-section"
+import { WorkIndex } from "@/components/sections/work-index"
+import { ProjectsSection } from "@/components/sections/projects-section"
 import { TeamSection } from "@/components/sections/team-section"
+import { TechSection } from "@/components/sections/tech-section"
+import { WritingSection } from "@/components/sections/writing-section"
 import { ContactSection } from "@/components/sections/contact-section"
-import { FooterSection } from "@/components/sections/footer-section"
+import { getBlogPosts } from "@/lib/blog"
 
-export default function Home() {
+export default async function Home() {
+  const posts = await getBlogPosts()
+
   return (
-    <div className="min-h-screen bg-background">
-      <NavbarDemo />
+    <>
+      <SiteHeader />
+      <main>
         <HeroSection />
-        <CoconutSplitSection />
-        <CoconutSplitStatsSection />
-        <GyatWordSection />
-        <TechSection />
+        <WorkIndex />
+        <ProjectsSection />
         <TeamSection />
+        <TechSection />
+        <WritingSection posts={posts} />
         <ContactSection />
-        <FooterSection />
-      </div>
-  );
+      </main>
+    </>
+  )
 }

@@ -1,55 +1,45 @@
-"use client"
-
-import { motion } from "framer-motion"
-import { AnimatedTestimonials } from "@/components/ui/animated-testimonials"
+import Image from "next/image"
+import Link from "next/link"
 import { TEAM_MEMBERS } from "@/lib/constants"
 
 export function TeamSection() {
-    return (
-        <section id="team" className="relative py-24 overflow-hidden bg-background">
-            {/* Subtle background elements */}
-            <div className="absolute inset-0 opacity-40">
-                <div className="absolute top-20 left-1/4 w-64 h-64 bg-gradient-radial from-primary/10 to-transparent rounded-full blur-3xl" />
-                <div className="absolute bottom-20 right-1/4 w-80 h-80 bg-gradient-radial from-secondary/8 to-transparent rounded-full blur-3xl" />
-            </div>
+  return (
+    <section id="people" aria-labelledby="people-heading" className="gutter pt-24 md:pt-36">
+      <div className="studio-grid gap-y-8 border-t border-foreground pt-5">
+        <div className="col-span-12 md:col-span-4">
+          <h2 id="people-heading" className="text-[clamp(2.5rem,5vw,4.5rem)] font-bold leading-[0.92] tracking-[-0.04em]">
+            People
+          </h2>
+          <p className="mt-4 max-w-[28ch] text-[15px] leading-snug text-muted-foreground">
+            Three founders, two engineers and two people on business development, all in Singapore.
+          </p>
+        </div>
 
-            <div className="relative container mx-auto px-6">
-                <div className="max-w-6xl mx-auto">
-                    {/* header section */}
-
-
-                    <div className="text-center space-y-8 mb-16">
-                        <motion.h2
-                            className="text-4xl md:text-5xl font-bold text-foreground"
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, ease: "easeOut" }}
-                            viewport={{ once: true, margin: "-100px" }}
-                        >
-                            Our Team
-                        </motion.h2>
-                        <motion.div
-                            className="mx-auto w-24 h-1 bg-gradient-to-r from-primary/60 via-primary to-primary/60 rounded-full"
-                            initial={{ width: 0 }}
-                            whileInView={{ width: 96 }}
-                            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-                            viewport={{ once: true, margin: "-100px" }}
-                        />
-
-                    </div>
-
-                    {/* Enhanced testimonials wrapper */}
-                    <motion.div
-                        className="relative"
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-                        viewport={{ once: true, margin: "-100px" }}
-                    >
-                        <AnimatedTestimonials testimonials={TEAM_MEMBERS} autoplay={true} />
-                    </motion.div>
-                </div>
-            </div>
-        </section>
-    )
+        <ul className="col-span-12 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 md:col-span-8 md:gap-x-6 lg:grid-cols-4">
+          {TEAM_MEMBERS.map((member, index) => (
+            <li key={member.name} className="group">
+              <div className="relative aspect-[4/5] overflow-hidden bg-muted">
+                <Image
+                  src={member.src}
+                  alt={`Portrait of ${member.name}`}
+                  fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 30vw, 18vw"
+                  priority={index < 4}
+                  className="object-cover grayscale transition-[filter,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03] group-hover:grayscale-0"
+                />
+              </div>
+              <p className="mt-3 text-[15px] font-semibold leading-tight">{member.name}</p>
+              <p className="text-[15px] leading-tight text-muted-foreground">{member.designation}</p>
+            </li>
+          ))}
+          <li className="flex aspect-[4/5] flex-col justify-end border border-foreground p-4">
+            <p className="text-[15px] leading-snug">Want to build with us?</p>
+            <Link href="#contact" className="mt-1 text-[15px] font-semibold text-primary underline decoration-primary/40 hover:decoration-primary">
+              Get in touch
+            </Link>
+          </li>
+        </ul>
+      </div>
+    </section>
+  )
 }

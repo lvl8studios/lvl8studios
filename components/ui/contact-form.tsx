@@ -1,20 +1,18 @@
 "use client";
 import * as React from "react";
-import emailjs from "@emailjs/browser";
+import { useState } from "react";
+import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { COMPANY } from "@/lib/constants";
-import { useState } from "react";
-import { Button } from "./button";
-import { Input } from "./input";
-import { Label } from "./label";
-import { Textarea } from "./textarea";
-import { Mail, User, MessageSquare } from "lucide-react";
 
 export type ContactFormProps = {
     componentId?: string;
     className?: string;
     onSubmitted?: (ok: boolean) => void;
 };
+
+const fieldClass =
+    "w-full border-0 border-b border-white/50 bg-transparent px-0 py-2.5 text-lg text-white placeholder:text-white/85 caret-white transition-colors focus:border-white focus:outline-none focus-visible:outline-none";
 
 export default function ContactForm({
     componentId,
@@ -30,130 +28,72 @@ export default function ContactForm({
         email: "",
         message: "",
     });
-    const [submitting, setSubmitting] = useState(false);
-    const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
-
-    async function onSubmit(e: React.FormEvent) {
+    function onSubmit(e: React.FormEvent) {
         e.preventDefault();
-        setSubmitting(true);
-        setStatus("idle");
+        const subject = `Website enquiry from ${state.name}`;
+        const body = [
+            `Name: ${state.name}`,
+            `Email: ${state.email}`,
+            componentId ? `Page section: ${componentId}` : "",
+            "",
+            state.message,
+        ].filter(Boolean).join("\n");
 
-        try {
-            await emailjs.send(
-                process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-                process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-                {
-                    from_name: state.name,
-                    from_email: state.email,
-                    message: state.message,
-                    to_name: COMPANY.name,
-                    component_id: componentId,
-                },
-                process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
-            );
-
-            onSubmitted?.(true);
-            setStatus("success");
-            setState({
-                name: "",
-                email: "",
-                message: "",
-            });
-        } catch {
-            onSubmitted?.(false);
-            setStatus("error");
-        } finally {
-            setSubmitting(false);
-        }
+        onSubmitted?.(true);
+        window.location.href = `mailto:${COMPANY.contact.email}?${new URLSearchParams({ subject, body })}`;
     }
 
     return (
-        <div className={cn("w-full max-w-xl", className)}>
-            <div className="rounded-xl border bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
-                <form onSubmit={onSubmit} className="p-6 sm:p-8 grid gap-6">
-                    <div className="grid gap-4 sm:grid-cols-2">
-                        <div className="grid gap-2">
-                            <Label htmlFor="name">Name</Label>
-                            <div className="relative">
-                                <User className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input
-                                    id="name"
-                                    aria-label="Your name"
-                                    className="pl-9"
-                                    value={state.name}
-                                    onChange={(e) =>
-                                        setState((s) => ({ ...s, name: e.target.value }))
-                                    }
-                                    required
-                                    placeholder="Jane Doe"
-                                />
-                            </div>
-                        </div>
-                        <div className="grid gap-2">
-                            <Label htmlFor="email">Email</Label>
-                            <div className="relative">
-                                <Mail className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    aria-label="Your email"
-                                    className="pl-9"
-                                    value={state.email}
-                                    onChange={(e) => setState((s) => ({ ...s, email: e.target.value }))}
-                                    required
-                                    placeholder="you@example.com"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="grid gap-2">
-                        <Label htmlFor="message">Message (optional)</Label>
-                        <div className="relative">
-                            <MessageSquare className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                            <Textarea
-                                id="message"
-                                aria-label="Your message"
-                                className="pl-9 min-h-32"
-                                value={state.message}
-                                onChange={(e) =>
-                                    setState((s) => ({ ...s, message: e.target.value }))
-                                }
-                                rows={5}
-                                placeholder="Tell us a bit about your needs..."
-                            />
-                        </div>
-                        <p className="text-xs text-muted-foreground">We typically respond within 1–2 business days.</p>
-                    </div>
-
-                    {status !== "idle" && (
-                        <div
-                            className={cn(
-                                "rounded-md border p-3 text-sm",
-                                status === "success"
-                                    ? "border-green-300/30 text-green-700 dark:text-green-400 bg-green-50/50 dark:bg-green-950/20"
-                                    : "border-red-300/30 text-red-700 dark:text-red-400 bg-red-50/50 dark:bg-red-950/20"
-                            )}
-                            role="status"
-                        >
-                            {status === "success"
-                                ? "Thanks! Your message was sent successfully."
-                                : "Sorry, something went wrong. Please try again."}
-                        </div>
-                    )}
-
-                    <Button type="submit" disabled={submitting} className="justify-center">
-                        {submitting ? (
-                            <span className="inline-flex items-center gap-2">
-                                <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                                Sending…
-                            </span>
-                        ) : (
-                            "Send message"
-                        )}
-                    </Button>
-                </form>
+        <form onSubmit={onSubmit} className={cn("grid gap-7 text-[15px]", className)}>
+            <div className="grid gap-7 sm:grid-cols-2 sm:gap-6">
+                <label className="grid gap-1">
+                    <span className="font-medium text-white">Name</span>
+                    <input
+                        name="name"
+                        autoComplete="name"
+                        className={fieldClass}
+                        value={state.name}
+                        onChange={(e) => setState((s) => ({ ...s, name: e.target.value }))}
+                        required
+                        placeholder="Jane Doe"
+                    />
+                </label>
+                <label className="grid gap-1">
+                    <span className="font-medium text-white">Email</span>
+                    <input
+                        name="email"
+                        type="email"
+                        autoComplete="email"
+                        className={fieldClass}
+                        value={state.email}
+                        onChange={(e) => setState((s) => ({ ...s, email: e.target.value }))}
+                        required
+                        placeholder="you@example.com"
+                    />
+                </label>
             </div>
-        </div>
+            <label className="grid gap-1">
+                <span className="font-medium text-white">Message (optional)</span>
+                <textarea
+                    name="message"
+                    className={cn(fieldClass, "min-h-28 resize-y")}
+                    value={state.message}
+                    onChange={(e) => setState((s) => ({ ...s, message: e.target.value }))}
+                    rows={3}
+                    placeholder="What would you like to talk about?"
+                />
+            </label>
+
+            <div className="flex flex-wrap items-center justify-between gap-4">
+                <p className="text-white/80">Opens your email app. We usually reply within 1–2 business days.</p>
+                <button
+                    type="submit"
+                    className="group inline-flex items-center gap-2 bg-white px-5 py-3 font-semibold text-primary transition-colors hover:bg-foreground hover:text-white focus-visible:outline-white"
+                >
+                    Compose email
+                    <ArrowRight aria-hidden strokeWidth={2} className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                </button>
+            </div>
+        </form>
     );
 }
-

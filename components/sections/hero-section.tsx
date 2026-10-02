@@ -1,75 +1,64 @@
-"use client"
+import Link from "next/link"
+import { COMPANY, PROJECTS, TEAM_MEMBERS } from "@/lib/constants"
 
-import { motion } from "framer-motion"
-import { COMPANY, SCROLL_OPTIONS, PROJECTS } from "@/lib/constants"
-import { CyclingAppIcons } from "@/components/ui/cycling-app-icons"
+const FOUNDERS = TEAM_MEMBERS.filter((member) => member.designation === "Co-Founder").map((member) => member.name)
+
+function Letters({ text, offset }: { text: string; offset: number }) {
+  return (
+    <>
+      {text.split("").map((letter, index) => (
+        <span key={index} className="wordmark-letter" style={{ "--i": offset + index } as React.CSSProperties}>
+          {letter}
+        </span>
+      ))}
+    </>
+  )
+}
 
 export function HeroSection() {
-    return (
-        <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background pt-20 md:pt-24">
-            <div className="relative z-20 container mx-auto px-6 md:mb-24 text-center">
-                <div className="max-w-4xl mx-auto space-y-10">
-                    <motion.div
-                        className="flex justify-center mb-16 -mt-6 md:-mt-12"
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
-                    >
-                        <CyclingAppIcons 
-                            icons={PROJECTS.map(project => ({
-                                src: project.src,
-                                title: project.title
-                            }))}
-                        />
-                    </motion.div>
+  return (
+    <section id="top" className="gutter pt-20 md:pt-24">
+      <h1
+        aria-label={COMPANY.name}
+        className="-ml-[0.04em] -mt-[0.12em] overflow-hidden whitespace-nowrap pb-[0.02em] pt-[0.12em] text-[length:calc((100vw_-_2*var(--gutter))*0.204)] font-bold leading-[0.82] tracking-[-0.04em]"
+      >
+        <span aria-hidden="true">
+          <Letters text="lvl" offset={0} />
+          <span className="relative mx-[0.02em] inline-block h-[0.74em] w-[0.42em] align-baseline">
+            <span className="absolute inset-0 flex items-center justify-center">
+              {/* The logo's infinity sign turns upright to become the 8 */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo-mark.png" alt="" className="infinity-eight w-[0.8em] max-w-none shrink-0" />
+            </span>
+          </span>
+          <Letters text="studios" offset={4} />
+        </span>
+      </h1>
 
-                    <div className="text-center space-y-8">
-                        <motion.h1
-                            className="text-2xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight"
-                            initial={{ opacity: 0, y: 50 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                        >
-                            {COMPANY.tagline}
-                        </motion.h1>
+      <div className="studio-grid settle-in mt-8 gap-y-10 border-t border-foreground pt-6 md:mt-10">
+        <p className="col-span-12 text-[clamp(1.5rem,2.5vw,2.5rem)] font-medium leading-[1.12] tracking-[-0.03em] md:col-span-8 lg:col-span-7">
+          {COMPANY.statement}
+        </p>
 
-                        <motion.p
-                            className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-                        >
-                            {COMPANY.description}
-                        </motion.p>
-                    </div>
-
-                    <motion.div
-                        className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-8"
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-                    >
-                        <motion.button
-                            onClick={() => document.querySelector('#coconutsplit')?.scrollIntoView(SCROLL_OPTIONS)}
-                            className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-3 rounded-lg font-medium transition-colors"
-                            whileHover={{ scale: 1.05, y: -2 }}
-                            whileTap={{ scale: 0.95 }}
-                            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                        >
-                            View Our Work
-                        </motion.button>
-                        <motion.button
-                            onClick={() => document.querySelector('#contact')?.scrollIntoView(SCROLL_OPTIONS)}
-                            className="w-full sm:w-auto bg-muted text-muted-foreground hover:bg-muted/80 px-8 py-3 rounded-lg font-medium transition-colors"
-                            whileHover={{ scale: 1.05, y: -2 }}
-                            whileTap={{ scale: 0.95 }}
-                            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                        >
-                            Get In Touch
-                        </motion.button>
-                    </motion.div>
-                </div>
-            </div>
-        </section>
-    )
+        <dl className="col-span-12 grid grid-cols-2 gap-x-6 gap-y-5 text-[15px] leading-snug md:col-span-4 md:col-start-9 md:grid-cols-1 lg:col-span-3 lg:col-start-10">
+          <div>
+            <dt className="text-muted-foreground">Founded by</dt>
+            <dd>{FOUNDERS.join(", ")}</dd>
+          </div>
+          <div>
+            <dt className="text-muted-foreground">Team</dt>
+            <dd>{`${TEAM_MEMBERS.length} people, ${PROJECTS.length} products shipped`}</dd>
+          </div>
+          <div className="col-span-2 md:col-span-1">
+            <dt className="sr-only">Contact</dt>
+            <dd>
+              <Link href="#contact" className="font-semibold text-primary underline decoration-primary/40 hover:decoration-primary">
+                Work with us
+              </Link>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+  )
 }

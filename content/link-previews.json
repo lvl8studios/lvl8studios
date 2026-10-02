@@ -1,0 +1,62 @@
+{
+  "https://coolify.io/": {
+    "url": "https://coolify.io/",
+    "title": "Coolify",
+    "description": "Self-hosting platform with superpowers. Deploy apps, databases & 280+ services to your server. Open-source alternative to Heroku.",
+    "siteName": "Coolify",
+    "image": "/blog-previews/e2948cdf08fb9ba1.png"
+  },
+  "https://fastapi.tiangolo.com/": {
+    "url": "https://fastapi.tiangolo.com/",
+    "title": "FastAPI - FastAPI",
+    "description": "FastAPI framework, high performance, easy to learn, fast to code, ready for production",
+    "siteName": "fastapi.tiangolo.com"
+  },
+  "https://git-scm.com/": {
+    "url": "https://git-scm.com/",
+    "title": "Git",
+    "description": "",
+    "siteName": "git-scm.com"
+  },
+  "https://nextjs.org/": {
+    "url": "https://nextjs.org/",
+    "title": "Next.js by Vercel - The React Framework",
+    "description": "Next.js by Vercel is the full-stack React framework for the web.",
+    "siteName": "nextjs.org",
+    "image": "/blog-previews/d158bee78dbfc136.png"
+  },
+  "https://nginx.org/": {
+    "url": "https://nginx.org/",
+    "title": "nginx",
+    "description": "",
+    "siteName": "nginx.org"
+  },
+  "https://plane.so/": {
+    "url": "https://plane.so/",
+    "title": "AI-native project management | Plane",
+    "description": "Project management for teams and AI agents. Plan, track, and ship with Projects, Wiki, and AI. Available on cloud, self-hosted, and air-gapped.",
+    "siteName": "Plane",
+    "image": "/blog-previews/7f78461af082d170.png"
+  },
+  "https://react.dev/": {
+    "url": "https://react.dev/",
+    "title": "React",
+    "description": "React is the library for web and native user interfaces. Build user interfaces out of individual pieces called components written in JavaScript. React is designed to let you seamlessly combine components written by independent people, teams, and organizations.",
+    "siteName": "react.dev",
+    "image": "/blog-previews/76b65ed970551f2f.png"
+  },
+  "https://tailwindcss.com/": {
+    "url": "https://tailwindcss.com/",
+    "title": "Tailwind CSS - Rapidly build modern websites without ever leaving your HTML.",
+    "description": "Tailwind CSS is a utility-first CSS framework for rapidly building modern websites without ever leaving your HTML.",
+    "siteName": "tailwindcss.com",
+    "image": "/blog-previews/863113879cb69e58.jpg"
+  },
+  "https://www.docker.com/": {
+    "url": "https://www.docker.com/",
+    "title": "Docker: Accelerated Container Application Development",
+    "description": "Docker is a platform designed to help developers build, share, and run container applications. We handle the tedious setup, so you can focus on the code.",
+    "siteName": "Docker",
+    "image": "/blog-previews/900ca8b2ccf190b2.avif"
+  }
+}

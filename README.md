@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# lvl8studios website
 
-## Getting Started
+The lvl8studios website is a Next.js application whose content and assets live entirely in this repository. It does not require a database, object storage, contact-form service, or runtime content API.
 
-First, run the development server:
+## Run locally
+
+Install dependencies and start the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+bun install
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Blog posts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Each published blog post is a Markdown file in `content/blog`. The filename becomes the URL slug, so `my-new-post.md` is available at `/blog/my-new-post`.
 
-## Learn More
+Start a post with this frontmatter:
 
-To learn more about Next.js, take a look at the following resources:
+```md
+---
+title: "My new post"
+excerpt: "A short description shown on the blog index."
+author: "Author Name"
+date: 2026-08-10
+tags: ["Product", "News"]
+image: /my-post-image.png
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# My new post
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Write the post in Markdown here.
+```
 
-## Deploy on Vercel
+Images belong in `public` and are referenced with a root-relative path such as `/my-post-image.png`. Reading time is calculated automatically. Add `published: false` to the frontmatter to keep a draft out of the site.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The built-in Markdown renderer supports headings, paragraphs, bold and italic text, links, inline code, fenced code blocks, blockquotes, ordered and unordered lists, and horizontal rules. It renders Markdown as React elements rather than injecting raw HTML.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Link previews
+
+External Markdown links can show a rich preview on hover and keyboard focus. Preview text and images are generated ahead of time and committed to the repository, so readers never contact a linked website until they choose to open it.
+
+After adding, changing, or removing a link in a post, run:
+
+```bash
+bun run update-link-previews
+```
+
+Commit the updated `content/link-previews.json` and any files created in `public/blog-previews`. The generator only requests public HTTP or HTTPS addresses, limits redirects and download sizes, and retains previously cached metadata if a site is temporarily unavailable. Production builds do not run this command or require network access.
+
+Blog posts also include a reading-progress indicator, a table of contents for posts with at least three section headings, copyable heading links, copy buttons on fenced code blocks, and newer/older post navigation.
+
+## Checks
+
+```bash
+bun run typecheck
+bun run build
+```
+
+The contact form uses a `mailto:` link and opens the visitor's configured email application. Change the destination in `lib/constants.ts`.

@@ -1,174 +1,126 @@
-"use client"
-
-import { use, useState, useEffect } from "react"
-import { motion } from "framer-motion"
+import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { BlogPost } from "@/types/blog"
-import { NavbarDemo } from "@/components/navbar"
-import { MarkdownRenderer } from "@/components/ui/markdown-renderer"
 import { ArrowLeft, Calendar, Clock, User } from "lucide-react"
+import { SiteHeader } from "@/components/navbar"
+import { MarkdownRenderer } from "@/components/ui/markdown-renderer"
+import { ReadingProgress } from "@/components/ui/reading-progress"
+import { getBlogPost, getBlogPosts } from "@/lib/blog"
+import { extractMarkdownHeadings } from "@/lib/markdown"
+import linkPreviewData from "@/content/link-previews.json"
+import type { LinkPreviewMap } from "@/types/link-preview"
 
 interface BlogPostPageProps {
-    params: Promise<{
-        slug: string
-    }>
+  params: Promise<{ slug: string }>
 }
 
-export default function BlogPostPage({ params }: BlogPostPageProps) {
-    const { slug } = use(params)
-    const [post, setPost] = useState<BlogPost | null>(null)
-    const [isLoading, setIsLoading] = useState(true)
+export const dynamicParams = false
 
-    useEffect(() => {
-        fetchPost()
-    }, [slug])
+export async function generateStaticParams() {
+  const posts = await getBlogPosts()
+  return posts.map((post) => ({ slug: post.id }))
+}
 
-    const fetchPost = async () => {
-        try {
-            const response = await fetch(`/api/blog/${slug}`)
-            if (response.ok) {
-                const data = await response.json()
-                setPost(data)
-            } else if (response.status === 404) {
-                notFound()
-            }
-        } catch (error) {
-            console.error('Error fetching post:', error)
-            notFound()
-        } finally {
-            setIsLoading(false)
-        }
-    }
+export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+  const { slug } = await params
+  const post = await getBlogPost(slug)
+  return post ? { title: `${post.title} | lvl8studios`, description: post.excerpt } : {}
+}
 
-    if (isLoading) {
-        return (
-            <div className="min-h-screen bg-background">
-                <NavbarDemo />
-                <div className="pt-20 flex items-center justify-center min-h-screen">
-                    <div className="text-center">
-                        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                        <p className="text-muted-foreground">Loading post...</p>
-                    </div>
-                </div>
+export default async function BlogPostPage({ params }: BlogPostPageProps) {
+  const { slug } = await params
+  const [post, posts] = await Promise.all([getBlogPost(slug), getBlogPosts()])
+  if (!post) notFound()
+  const headings = extractMarkdownHeadings(post.content).filter((heading) => heading.depth === 2 || heading.depth === 3)
+  const postIndex = posts.findIndex((candidate) => candidate.id === post.id)
+  const newerPost = postIndex > 0 ? posts[postIndex - 1] : null
+  const olderPost = postIndex >= 0 && postIndex < posts.length - 1 ? posts[postIndex + 1] : null
+  const linkPreviews = linkPreviewData as LinkPreviewMap
+
+  return (
+    <div className="min-h-screen bg-background">
+      <ReadingProgress />
+      <SiteHeader />
+      <main className="pt-20">
+        <div className="container mx-auto px-6 py-12">
+          <div className="mx-auto max-w-4xl">
+            <Link href="/blog" className="mb-8 inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-primary">
+              <ArrowLeft className="h-4 w-4" />
+              Back to Blog
+            </Link>
+
+            <div className="relative mb-8 aspect-[16/9] overflow-hidden rounded-xl">
+              <Image
+                src={post.image}
+                alt={post.title}
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                className="object-cover"
+              />
             </div>
-        )
-    }
 
-    if (!post) {
-        notFound()
-    }
+            <header className="mb-8">
+              <h1 className="mb-6 text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">{post.title}</h1>
+              <div className="mb-6 flex flex-wrap items-center gap-6 text-muted-foreground">
+                <span className="flex items-center gap-2"><User className="h-4 w-4" />{post.author}</span>
+                <time dateTime={post.publishedAt} className="flex items-center gap-2"><Calendar className="h-4 w-4" />{post.publishedAt}</time>
+                <span className="flex items-center gap-2"><Clock className="h-4 w-4" />{post.readTime}</span>
+              </div>
+              <div className="mb-6 flex flex-wrap gap-2">
+                {post.tags.map((tag) => (
+                  <span key={tag} className="inline-flex rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">{tag}</span>
+                ))}
+              </div>
+              <p className="text-lg leading-relaxed text-muted-foreground">{post.excerpt}</p>
+            </header>
 
-    return (
-        <div className="min-h-screen bg-background">
-            <NavbarDemo />
-            
-            <main className="pt-20">
-                <div className="container mx-auto px-6 py-12">
-                    <div className="max-w-4xl mx-auto">
-                        {/* Back Button */}
-                        <motion.div
-                            className="mb-8"
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.5 }}
-                        >
-                            <Link
-                                href="/blog"
-                                className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-                            >
-                                <ArrowLeft className="w-4 h-4" />
-                                Back to Blog
-                            </Link>
-                        </motion.div>
+            {headings.length >= 3 && (
+              <nav aria-label="Table of contents" className="mb-10 border-y border-border py-5">
+                <p className="mb-3 text-sm font-semibold text-foreground">On this page</p>
+                <ol className="space-y-2 text-sm text-muted-foreground">
+                  {headings.map((heading) => (
+                    <li key={heading.id} className={heading.depth === 3 ? "pl-4" : undefined}>
+                      <a href={`#${heading.id}`} className="hover:text-primary focus-visible:outline-none focus-visible:text-primary">
+                        {heading.text}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            )}
 
-                        {/* Hero Image */}
-                        <motion.div
-                            className="relative aspect-[16/9] rounded-xl overflow-hidden mb-8"
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.6 }}
-                        >
-                            <Image
-                                src={post.image}
-                                alt={post.title}
-                                fill
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-                                className="object-cover"
-                            />
-                        </motion.div>
+            <article data-blog-article className="text-foreground">
+              <MarkdownRenderer content={post.content} linkPreviews={linkPreviews} skipFirstH1 />
+            </article>
 
-                        {/* Article Header */}
-                        <motion.header
-                            className="mb-8"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
-                        >
-                            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
-                                {post.title}
-                            </h1>
-                            
-                            <div className="flex flex-wrap items-center gap-6 text-muted-foreground mb-6">
-                                <div className="flex items-center gap-2">
-                                    <User className="w-4 h-4" />
-                                    <span>{post.author}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Calendar className="w-4 h-4" />
-                                    <span>{post.publishedAt}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Clock className="w-4 h-4" />
-                                    <span>{post.readTime}</span>
-                                </div>
-                            </div>
-                            
-                            <div className="flex flex-wrap gap-2 mb-6">
-                                {post.tags.map((tag) => (
-                                    <span
-                                        key={tag}
-                                        className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary"
-                                    >
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div>
-                            
-                            <p className="text-lg text-muted-foreground leading-relaxed">
-                                {post.excerpt}
-                            </p>
-                        </motion.header>
+            <div className="mt-16 border-t border-border pt-8">
+              <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+                <ArrowLeft className="h-4 w-4" />
+                All posts
+              </Link>
 
-                        {/* Article Content */}
-                        <motion.article
-                            className="text-foreground"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.4 }}
-                        >
-                            <MarkdownRenderer content={post.content} />
-                        </motion.article>
-
-                        {/* Back to Blog Footer */}
-                        <motion.div
-                            className="mt-16 pt-8 border-t border-border"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.6 }}
-                        >
-                            <Link
-                                href="/blog"
-                                className="inline-flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 rounded-lg font-medium transition-colors"
-                            >
-                                <ArrowLeft className="w-4 h-4" />
-                                Read More Posts
-                            </Link>
-                        </motion.div>
-                    </div>
-                </div>
-            </main>
+              {(newerPost || olderPost) && (
+                <nav aria-label="More blog posts" className="mt-8 grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2">
+                  {newerPost ? (
+                    <Link href={`/blog/${newerPost.id}`} className="bg-card p-5 transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary">
+                      <span className="text-xs text-muted-foreground">Newer post</span>
+                      <span className="mt-1 block font-semibold leading-6 text-foreground">{newerPost.title}</span>
+                    </Link>
+                  ) : <span className="hidden bg-card sm:block" />}
+                  {olderPost ? (
+                    <Link href={`/blog/${olderPost.id}`} className="bg-card p-5 text-right transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary">
+                      <span className="text-xs text-muted-foreground">Older post</span>
+                      <span className="mt-1 block font-semibold leading-6 text-foreground">{olderPost.title}</span>
+                    </Link>
+                  ) : <span className="hidden bg-card sm:block" />}
+                </nav>
+              )}
+            </div>
+          </div>
         </div>
-    )
+      </main>
+    </div>
+  )
 }

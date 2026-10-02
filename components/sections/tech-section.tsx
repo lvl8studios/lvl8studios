@@ -1,133 +1,33 @@
-"use client"
-
-import { motion } from "framer-motion"
-import Image from "next/image"
-import { TECH_SECTION } from "@/lib/constants"
-
-interface TechItemProps {
-    name: string
-    icon: string
-    image: string
-    delay?: number
-}
-
-function TechItem({ name, icon, image, delay = 0 }: TechItemProps) {
-    return (
-        <motion.div
-            className="flex flex-col items-center space-y-3"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay }}
-            viewport={{ once: true, margin: "-100px" }}
-        >
-            <motion.div
-                whileHover={{ scale: 1.1 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-            >
-                <Image 
-                    src={image}
-                    alt={name}
-                    width={56}
-                    height={56}
-                    className="w-14 h-14 object-contain filter grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
-                />
-            </motion.div>
-            <span className="text-sm font-medium text-foreground text-center">
-                {name}
-            </span>
-        </motion.div>
-    )
-}
-
-interface TechCategoryProps {
-    title: string
-    technologies: readonly { readonly name: string; readonly icon: string; readonly image: string }[]
-    delay?: number
-}
-
-function TechCategory({ title, technologies, delay = 0 }: TechCategoryProps) {
-    return (
-        <motion.div
-            className="space-y-6"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay }}
-            viewport={{ once: true, margin: "-100px" }}
-        >
-            <h3 className="text-xl font-semibold text-foreground text-center mb-6">
-                {title}
-            </h3>
-            <div className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-12 max-w-4xl mx-auto">
-                {technologies.map((tech, index) => (
-                    <TechItem
-                        key={tech.name}
-                        name={tech.name}
-                        icon={tech.icon}
-                        image={tech.image}
-                        delay={delay + index * 0.1}
-                    />
-                ))}
-            </div>
-        </motion.div>
-    )
-}
+import Link from "next/link"
+import { STACK } from "@/lib/constants"
 
 export function TechSection() {
-    return (
-        <section id="tech" className="py-20 bg-background">
-            <div className="container mx-auto px-6">
-                <div className="max-w-6xl mx-auto">
-                    {/* Section Header */}
-                    <motion.div
-                        className="text-center mb-16"
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        viewport={{ once: true, margin: "-100px" }}
-                    >
-                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
-                            {TECH_SECTION.title}
-                        </h2>
-                        <motion.div
-                            className="mx-auto w-24 h-1 bg-gradient-to-r from-primary/60 via-primary to-primary/60 rounded-full mb-6"
-                            initial={{ width: 0 }}
-                            whileInView={{ width: 96 }}
-                            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-                            viewport={{ once: true, margin: "-100px" }}
-                        />
-                        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                            {TECH_SECTION.description}
-                        </p>
-                        <p className="text-base text-muted-foreground mt-4">
-                            Learn how we use them at our{' '}
-                            <a href="/blog" className="inline-flex items-center gap-1 text-primary underline hover:text-primary/80 transition-colors">
-                                blog
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
-                                </svg>
-                            </a>
-                        </p>
-                        
-                    </motion.div>
+  return (
+    <section id="stack" aria-labelledby="stack-heading" className="gutter pt-24 md:pt-36">
+      <div className="studio-grid gap-y-8 border-t border-foreground pt-5">
+        <div className="col-span-12 md:col-span-4">
+          <h2 id="stack-heading" className="text-[clamp(2.5rem,5vw,4.5rem)] font-bold leading-[0.92] tracking-[-0.04em]">
+            How we build
+          </h2>
+          <Link
+            href="/blog/tech-stack-choices"
+            className="mt-4 inline-block text-[15px] font-semibold text-primary underline decoration-primary/40 hover:decoration-primary"
+          >
+            Why we chose these tools
+          </Link>
+        </div>
 
-                    {/* Tech Categories */}
-                    <div className="space-y-16">
-                        {/* DevOps Section */}
-                        <TechCategory
-                            title={TECH_SECTION.devops.title}
-                            technologies={TECH_SECTION.devops.technologies}
-                            delay={0.2}
-                        />
-
-                        {/* SWE Section */}
-                        <TechCategory
-                            title={TECH_SECTION.swe.title}
-                            technologies={TECH_SECTION.swe.technologies}
-                            delay={0.4}
-                        />
-                    </div>
-                </div>
-            </div>
-        </section>
-    )
+        {STACK.map((group, index) => (
+          <div key={group.title} className={index === 0 ? "col-span-12 sm:col-span-6 md:col-span-4 md:col-start-6" : "col-span-12 sm:col-span-6 md:col-span-3 md:col-start-10"}>
+            <h3 className="border-b border-foreground/20 pb-2.5 text-[15px] text-muted-foreground">{group.title}</h3>
+            <ul className="mt-3 text-[clamp(1.5rem,2.4vw,2.25rem)] font-medium leading-[1.15] tracking-[-0.03em]">
+              {group.technologies.map((technology) => (
+                <li key={technology}>{technology}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
 }
