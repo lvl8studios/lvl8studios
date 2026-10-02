@@ -37,13 +37,11 @@ Telegram has a feature called `Mini Apps`{Web apps that open inside Telegram and
 
 People could enter an amount and select who was splitting it through a form. That was much easier than typing a long command into the chat, and they still didn't have to download anything.
 
-This became the first version of CoconutSplit we shared with friends and family. We've changed the screens quite a bit since then.
+This became the first version of CoconutSplit we shared with friends and family. Here's what it looked like:
 
-Here's what CoconutSplit looks like today:
-
-![The current CoconutSplit group overview showing totals, outstanding debts, and settlements](/blog/coconutsplit-ledger.jpeg "The group overview today")
-![The current CoconutSplit form for adding an expense](/blog/coconutsplit-add-expense.jpeg "Adding an expense")
-![CoconutSplit Insights showing personal balances and group spending over time](/blog/coconutsplit-insights.jpeg "Group spending and insights")
+![The early CoconutSplit group ledger showing expenses and settlements](/blog/coconutsplit-early-ledger.jpeg "The original group ledger")
+![The early CoconutSplit form for adding an expense and selecting participants](/blog/coconutsplit-early-add-expense.jpeg "The original expense form")
+![The early CoconutSplit settle-up screen showing outstanding debts](/blog/coconutsplit-early-settle-up.jpeg "The original settle-up screen")
 
 ## How it spread
 
@@ -54,5 +52,11 @@ Some of those people found it useful enough to add to their own group chats. The
 ## Nearly 10,000 users
 
 Slowly, we watched the user count climb to 50, then 100, then 500. Now we're close to 10,000.
+
+We've changed the screens quite a bit since that first version. Here's what CoconutSplit looks like today:
+
+![The current CoconutSplit group overview showing totals, outstanding debts, and settlements](/blog/coconutsplit-ledger.jpeg "The group overview today")
+![The current CoconutSplit form for adding an expense](/blog/coconutsplit-add-expense.jpeg "Adding an expense today")
+![CoconutSplit Insights showing personal balances and group spending over time](/blog/coconutsplit-insights.jpeg "Group spending and insights today")
 
 I'll write about CoconutSplit's architecture and my homelab in a separate post.
