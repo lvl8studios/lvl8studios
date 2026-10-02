@@ -40,7 +40,7 @@ Visitors mostly skim on desktop between other tabs, or open the link on a phone 
 
 - CoconutSplit: ~10,000 users (confirmed). Older figures still in code, unconfirmed against the new user count: 7,000 transactions, $1.1M SGD of expenses tracked. Instagram @coconutsplitbot.
 - GyatWord: Best Polyglot Hack, NUS Hack&Roll 2025; Devpost and GitHub links; product screenshots `public/gyatword-detail.png`, `public/gyatword-detail-mobile.png`.
-- Team photos for seven members in `public/`.
+- Team portraits for Jensen Huang, David Chan and Benjamin Koh in `public/`.
 - Do not invent clients, testimonials, revenue or employers.
 
 ## Product Principles

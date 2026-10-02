@@ -11,7 +11,7 @@ export function TeamSection() {
             People
           </h2>
           <p className="mt-4 max-w-[28ch] text-[15px] leading-snug text-muted-foreground">
-            Three founders, two engineers and two people on business development, all in Singapore.
+            Three founders based in Singapore.
           </p>
         </div>
 

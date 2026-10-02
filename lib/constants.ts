@@ -35,26 +35,6 @@ export const TEAM_MEMBERS = [
         designation: "Co-Founder",
         src: "/ben.jpg",
     },
-    {
-        name: "Anish Kousik",
-        designation: "Software Development",
-        src: "/anish.jpeg",
-    },
-    {
-        name: "Siva Adharsh",
-        designation: "Software Development",
-        src: "/siva.jpeg",
-    },
-    {
-        name: "MinHo Jeon",
-        designation: "Business Development",
-        src: "/minho.png",
-    },
-    {
-        name: "Abdurrahman Alsagoff",
-        designation: "Business Development",
-        src: "/rahman.jpeg",
-    }
 ] as const
 
 export type ProjectLink = { label: string; href: string }
